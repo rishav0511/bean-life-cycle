@@ -1,5 +1,6 @@
 package com.rishav.beanlifecycle;
 
+import javax.annotation.PostConstruct;
 import java.sql.*;
 
 public class StudentDAO {
@@ -7,6 +8,7 @@ public class StudentDAO {
     private String url;
     private String username;
     private String password;
+    Connection con;
 
     public void setDriver(String driver) {
         this.driver = driver;
@@ -24,13 +26,22 @@ public class StudentDAO {
         this.password = password;
     }
 
-    public void selectAllRows() throws ClassNotFoundException, SQLException {
+    @PostConstruct
+    public void init() throws ClassNotFoundException, SQLException
+    {
+        createStudentDBConnection();
+    }
+
+    public void createStudentDBConnection() throws ClassNotFoundException, SQLException {
         //load Driver
         Class.forName(driver);
 
         //get a connection
-        Connection con = DriverManager.getConnection(url,username,password);
+        con = DriverManager.getConnection(url,username,password);
 
+    }
+
+    public void selectAllRows() throws SQLException, ClassNotFoundException {
         //execute query
         Statement statement = con.createStatement();
 
@@ -59,6 +70,9 @@ public class StudentDAO {
 
         statement.executeUpdate("delete from ESNew.HostelStudentInfo where Student_id = "+studentId);
         System.out.println("Record deleted with id: " + studentId);
+    }
+
+    public void closeConnection() throws SQLException {
         con.close();
     }
 }
