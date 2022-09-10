@@ -1,6 +1,7 @@
 package com.rishav.beanlifecycle;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.sql.*;
 
 public class StudentDAO {
@@ -72,6 +73,7 @@ public class StudentDAO {
         System.out.println("Record deleted with id: " + studentId);
     }
 
+    @PreDestroy
     public void closeConnection() throws SQLException {
         con.close();
     }

@@ -10,5 +10,6 @@ public class Test {
         ApplicationContext context = new ClassPathXmlApplicationContext("file:src/main/java/com/rishav/beanlifecycle/beans.xml");
         StudentDAO studentDAO = context.getBean("studentDAO",StudentDAO.class);
         studentDAO.selectAllRows();
+        ((ClassPathXmlApplicationContext)context).close();
     }
 }
